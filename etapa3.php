@@ -1,10 +1,13 @@
 <?php
 session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+<<<<<<< HEAD
     $_SESSION['nome'] = $_POST['nome'];
     $_SESSION['data_nascimento'] = $_POST['data_nascimento'];
     $_SESSION['sexo'] = $_POST['sexo'];
     $_SESSION['cpf'] = $_POST['cpf'];
+=======
+>>>>>>> master
     $_SESSION['email'] = $_POST['email'];
     $_SESSION['telefone'] = $_POST['telefone'];
     $_SESSION['empresa'] = $_POST['empresa'];
@@ -38,7 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <div class="mb-3">
             <label for="orgao_expedidor" class="form-label">Órgão Expedidor</label>
+<<<<<<< HEAD
             <input type="text" class="form-control" id="orgao_expedidor" name="orgao_expedidor" required>
+=======
+            <input type="text" class="form-control" id="orgao_expedidor" name="orgao_emissor" required>
+>>>>>>> master
         </div>
         <div class="mb-3">
             <label for="passaporte" class="form-label">Passaporte</label>

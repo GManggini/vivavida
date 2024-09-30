@@ -1,5 +1,6 @@
 <?php
 require('fpdf/fpdf.php');
+<<<<<<< HEAD
 
 // Obtendo os dados de todas as etapas
 $name = $_POST['name'];
@@ -22,6 +23,81 @@ $cep = $_POST['cep'];
 $city = $_POST['city'];
 $state = $_POST['state'];
 $country = $_POST['country'];
+=======
+require('db_connect.php');
+set_time_limit(300); // Aumenta o limite de tempo para 5 minutos (300 segundos)
+session_start(); // Inicie a sessão para acessar os dados
+
+// Função para obter dados da sessão ou definir um valor padrão
+// Função para obter dados da sessão ou POST
+function get_data($key, $default = '') {
+    return isset($_POST[$key]) ? $_POST[$key] : (isset($_SESSION[$key]) ? $_SESSION[$key] : $default);
+}
+
+// Verifique se o usuário está logado e possui um ID
+if (!isset($_SESSION['usuario_id'])) {
+    echo "Erro: Usuário não está logado.";
+    exit;
+}
+
+// Obtendo os dados de todas as etapas da sessão
+$nome = get_data('nome');
+$data_nascimento = get_data('data_nascimento') ? date('d/m/Y', strtotime($_SESSION['data_nascimento'])) : '';
+$sexo = get_data('sexo');
+$cpf = get_data('cpf');
+$email = get_data('email');
+$telefone = get_data('telefone');
+$empresa = get_data('empresa');
+$profissao = get_data('profissao');
+$cnpj = get_data('cnpj');
+$numero_identidade = get_data('numero_identidade');
+$tipo_documento = get_data('tipo_documento');
+$orgao_emissor = get_data('orgao_emissor');
+$passaporte = get_data('passaporte');
+$rua = get_data('rua');
+$numero = get_data('numero');
+$bairro = get_data('bairro');
+$cep = get_data('cep');
+$cidade = get_data('cidade');
+$estado = get_data('estado');
+$pais = get_data('pais');
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+$data_nascimento_formatada = DateTime::createFromFormat('d/m/Y', $data_nascimento)->format('Y-m-d');
+
+$usuario_id = $_SESSION['usuario_id']; // Supondo que você tenha o ID do usuário na sessão
+$sql = "INSERT INTO hospedes (usuario_id ,nome, nascimento, sexo, cpf, email, telefone, empresa, profissao, cnpj, num_identidade, tipo, orgao_emissor, passaporte, rua, numero, bairro, cep, cidade, estado, pais) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param(
+    "issssssssssssssssssss",
+    $usuario_id,// 20 "s" para strings
+    $nome,
+    $data_nascimento_formatada,
+    $sexo,
+    $cpf,
+    $email,
+    $telefone,
+    $empresa,
+    $profissao,
+    $cnpj,
+    $numero_identidade,
+    $tipo_documento,
+    $orgao_emissor,
+    $passaporte,
+    $rua,
+    $numero,
+    $bairro,
+    $cep,
+    $cidade,
+    $estado,
+    $pais
+);
+
+// Executando a inserção
+$stmt->execute();
+>>>>>>> master
 
 // Criando o PDF
 $pdf = new FPDF();
@@ -48,6 +124,7 @@ $cidadeWidth = 50;     // Largura para a cidade
 $estadoWidth = 40;     // Largura para o estado
 $cepWidth = 40;        // Largura para o CEP
 
+<<<<<<< HEAD
 /*// Calculando o espaço total
 $totalWidth = $nomeWidth + $dataWidth + $sexoWidth + $cpfWidth + 4 * $spacing;
 $totalWidth2 = $enderecoWidth + $numeroWidth + $bairroWidth + $cidadeWidth + $estadoWidth + $cepWidth + 6 * $spacing;
@@ -73,6 +150,8 @@ if ($totalWidth2 > $availableWidth) {
     $spacing *= $scale;
 }
 */
+=======
+>>>>>>> master
 // Adicionando o logo
 $pdf->Image('images/vivavidalogo.png', 10, 10, 50);
 $pdf->Ln(15);
@@ -99,11 +178,19 @@ $pdf->Ln(); // Quebra de linha
 
 // Inserindo os dados dentro das caixas
 $pdf->SetXY($leftMargin, 65); // Início da linha de dados
+<<<<<<< HEAD
 $pdf->Cell($nomeWidth, 10, $name, 1);
 $pdf->SetX($leftMargin + $nomeWidth + $spacing);
 $pdf->Cell($dataWidth, 10, $date_of_birth, 1);
 $pdf->SetX($leftMargin + $nomeWidth + $dataWidth + 2 * $spacing);
 $pdf->Cell($sexoWidth, 10, $gender, 1);
+=======
+$pdf->Cell($nomeWidth, 10, $nome, 1);
+$pdf->SetX($leftMargin + $nomeWidth + $spacing);
+$pdf->Cell($dataWidth, 10, $data_nascimento, 1);
+$pdf->SetX($leftMargin + $nomeWidth + $dataWidth + 2 * $spacing);
+$pdf->Cell($sexoWidth, 10, $sexo, 1);
+>>>>>>> master
 $pdf->SetX($leftMargin + $nomeWidth + $dataWidth + $sexoWidth + 3 * $spacing);
 $pdf->Cell($cpfWidth, 10, $cpf, 1);
 $pdf->Ln(); // Quebra de linha
@@ -119,7 +206,11 @@ $pdf->Ln(); // Quebra de linha
 $pdf->SetXY($leftMargin, 95); // Início da linha de dados
 $pdf->Cell(90, 10, $email, 1);
 $pdf->SetX($leftMargin + 90 + $spacing);
+<<<<<<< HEAD
 $pdf->Cell(90, 10, $phone, 1);
+=======
+$pdf->Cell(90, 10, $telefone, 1);
+>>>>>>> master
 $pdf->SetX($leftMargin + $cpfWidth + $spacing);
 $pdf->Ln(); // Quebra de linha
 
@@ -134,9 +225,15 @@ $pdf->Ln(); // Quebra de linha
 
 
 $pdf->SetXY($leftMargin, 125); // Início da linha de dados
+<<<<<<< HEAD
 $pdf->Cell(60, 10, $company, 1);
 $pdf->SetX($leftMargin + 60 + $spacing);
 $pdf->Cell(60, 10, $profession, 1);
+=======
+$pdf->Cell(60, 10, $empresa, 1);
+$pdf->SetX($leftMargin + 60 + $spacing);
+$pdf->Cell(60, 10, $profissao, 1);
+>>>>>>> master
 $pdf->SetX($leftMargin + 125 + $spacing);
 $pdf->Cell(55, 10, $cnpj, 1);
 $pdf->Ln(); // Quebra de linha
@@ -154,6 +251,7 @@ $pdf->Ln(); // Quebra de linha
 
 // Inserindo os dados dos documentos
 $pdf->SetXY($leftMargin, 155); // Início da linha de dados
+<<<<<<< HEAD
 $pdf->Cell(60, 10, $id_number, 1);
 $pdf->SetX($leftMargin + 60 + $spacing);
 $pdf->Cell(30, 10, $id_type, 1);
@@ -161,6 +259,15 @@ $pdf->SetX($leftMargin + 60 + 30 + 2 * $spacing);
 $pdf->Cell(35, 10, $issuing_body, 1);
 $pdf->SetX($leftMargin + 60 + 30 + 35 + 3 * $spacing);
 $pdf->Cell(45, 10, $passport, 1);
+=======
+$pdf->Cell(60, 10, $numero_identidade, 1);
+$pdf->SetX($leftMargin + 60 + $spacing);
+$pdf->Cell(30, 10, $tipo_documento, 1);
+$pdf->SetX($leftMargin + 60 + 30 + 2 * $spacing);
+$pdf->Cell(35, 10, $orgao_emissor, 1);
+$pdf->SetX($leftMargin + 60 + 30 + 35 + 3 * $spacing);
+$pdf->Cell(45, 10, $passaporte, 1);
+>>>>>>> master
 $pdf->Ln(); // Quebra de linha
 
 // Etapa 3: Documentos e Endereço
@@ -174,11 +281,19 @@ $pdf->Ln();
 
 // Inserindo os dados dentro das caixas
 $pdf->SetXY($leftMargin, 185); // Início da linha de dados
+<<<<<<< HEAD
 $pdf->Cell($enderecoWidth, 10, $street, 1);
 $pdf->SetX($leftMargin + $enderecoWidth + $spacing);
 $pdf->Cell(35, 10, $number, 1);
 $pdf->SetX($leftMargin + $enderecoWidth + 35 + 2 * $spacing);
 $pdf->Cell($bairroWidth, 10, $neighborhood, 1);
+=======
+$pdf->Cell($enderecoWidth, 10, $rua, 1);
+$pdf->SetX($leftMargin + $enderecoWidth + $spacing);
+$pdf->Cell(35, 10, $numero, 1);
+$pdf->SetX($leftMargin + $enderecoWidth + 35 + 2 * $spacing);
+$pdf->Cell($bairroWidth, 10, $bairro, 1);
+>>>>>>> master
 $pdf->Ln();
 
 //segunda linha enderco
@@ -197,11 +312,19 @@ $pdf->SetXY($leftMargin, 215);
 $pdf->SetX($leftMargin);
 $pdf->Cell($cepWidth, 10, $cep, 1);
 $pdf->SetX($leftMargin + $cepWidth + $spacing);
+<<<<<<< HEAD
 $pdf->Cell($cidadeWidth, 10, $city, 1);
 $pdf->SetX($leftMargin + $cepWidth+ $cidadeWidth + 2 * $spacing);
 $pdf->Cell($estadoWidth, 10, $state, 1);
 $pdf->SetX($leftMargin + $cepWidth + $cidadeWidth + $estadoWidth + 3 * $spacing);
 $pdf->Cell($estadoWidth, 10, $country, 1);
+=======
+$pdf->Cell($cidadeWidth, 10, $cidade, 1);
+$pdf->SetX($leftMargin + $cepWidth+ $cidadeWidth + 2 * $spacing);
+$pdf->Cell($estadoWidth, 10, $estado, 1);
+$pdf->SetX($leftMargin + $cepWidth + $cidadeWidth + $estadoWidth + 3 * $spacing);
+$pdf->Cell($estadoWidth, 10, $pais, 1);
+>>>>>>> master
 $pdf->Ln(); // Quebra de linha
 
 // Adicionando a assinatura
@@ -211,5 +334,15 @@ $pdf->Cell(0, 10, 'Assinatura do Hospede', 0, 1);
 $pdf->Line(($pageWidth - $rightMargin), 249.7, 90, 249.7,'R'); // Linha para a assinatura
 
 // Salvando o PDF
+<<<<<<< HEAD
 $pdf->Output('D', $name +    date('d/m/y') . '.pdf');
+=======
+$pdf->Output('D', $nome . date('d-m-y') . '.pdf');
+// Redireciona para a tela principal após gerar o PDF
+header('Location: index.php?success=1');
+exit;
+// Fechando a conexão
+//$stmt->close();
+//$conn->close();
+>>>>>>> master
 ?>
